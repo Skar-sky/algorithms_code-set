@@ -1,5 +1,7 @@
 // 贪心算法即是利用贪心的策略，保证每次操作都是局部最优的，从而使得最终得到的结果是全局最优的
 #include<iostream>
+
+
 // 1.分发饼干问题：有一群孩子和一堆饼干，每个孩子有一个饥饿度，每个饼干都有一个大小。每个孩子只能吃最多一个饼干，且只有饼干的大小大于孩子的饥饿度时，这个孩子才能吃饱。求解最多有多少孩子可以吃饱。
 // leet_code题号：455
 // 暴力解法：
@@ -21,7 +23,6 @@ int findContentChildren(vector<int>& g, vector<int>& s) {
     }
     return num;
 }
-
 // 降低时间复杂度为o(log(m)+log(n))
 int findContentChildren(vector<int>& g, vector<int>& s){
     int num=0;
@@ -37,6 +38,7 @@ int findContentChildren(vector<int>& g, vector<int>& s){
     }
     return num;
 }
+
 
 
 // 2.(leet-code题号：135)一群孩子站成一排，每一个孩子有自己的评分。现在需要给这些孩子发糖果，规则是如果一个孩子的评分比自己身旁的一个孩子要高，那么这个孩子就必须得到比身旁孩子更多的糖果；所有孩子至少要有一个糖果。求解最少需要多少个糖果。
@@ -60,4 +62,26 @@ int candy(vector<int>& ratings) {
     return accumulate(num.begin(),num.end(),0);
 }
 
+
+
 // 3.(leet-code题号：435)给定多个区间，计算让这些区间互不重叠所需要移除区间的最少个数。起止相连不算重叠。
+//首先需要掌握二维向量的排序算法，按照每个区间右端进行从小到大的排序，通过比较前者区间的右端和后者区间的左端，确定最终需要删除的数目。
+int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+    if(intervals.size() == 0){
+        return 0;
+    }
+    sort(intervals.begin(), intervals.end(), [](vector<int>u, vector<int>v){
+        return u[1] < v[1];
+    });
+    int num = 0, p = intervals[0][1];
+    for(int i = 1;i < intervals.size();i++){
+        if(intervals[i][0] < p){
+            num++;
+        }
+        else{
+            p = intervals[i][1];
+        }
+    }
+    return num;
+}
+
