@@ -55,3 +55,43 @@ int findMinArrowShots(vector<vector<int>>& points) {
     }
     return num;
 }
+
+
+
+// 3.(leet-code题号：763)划分字母区间
+// 思路：可以利用双指针的形式，首先找到每个字母对应的最后一次出现的位置，然后利用start和end两个指针来指示位置，得到我们的目标字符串
+vector<int> partitionLabels(string S) {
+    int last[26];
+    int start = 0, end = 0;
+    vector<int>num; 
+    for(int i = 0;i<S.length();i++){
+        last[S[i] - 'a'] = i;
+    }
+    for(int i = 0;i<S.length();i++){
+        end = max(end, last[S[i] - 'a']);
+        if(i == end){
+            num.push_back(end-start+1);
+            start = end + 1;
+        }
+    }
+    return num;
+}
+
+
+
+// 4.(leet-code题号：406)根据身高重建序列
+// 应对这种问题，我们经常使用的方法就是对其中一个元素进行升序，另外一个进行降序处理；根据题目要求设置相应的元素插入的方法。
+vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+    sort(people.begin(), people.end(), [](const vector<int>u, const vector<int>v){
+        return (u[0] > v[0] || (u[0] == v[0] && u[1] < v[1]));
+    });
+    vector<int>index;
+    vector<vector<int>>res;
+    for(int i = 0;i<people.size();i++){
+        index.insert(index.begin()+people[i][1], i);  //这里我们根据第二个元素进行相应排列插入。
+    }
+    for(int i = 0;i<people.size();i++){
+        res.push_back(people[index[i]]);
+    }
+    return res;
+}
