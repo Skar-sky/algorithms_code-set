@@ -78,3 +78,51 @@ bool Palindrome(string s, int low, int high){
     return true;
 }
 
+
+
+// 9.(leet-code题号：524)通过删除字母匹配到字典中最长的单词
+// 该题主要是采用三步，第一步：判断字典中的单词是否可以通过源字符串的删减得到；第二步：找到相匹配的最长的字符串；第三步：在最长的字符串中找到字典顺序最小的一个
+string findLongestWord(string s, vector<string>& d) {
+    int counter = 0;
+    int max_index = 0;
+    vector<int>max;
+    for(int i = 0; i<d.size(); i++){
+        counter = findword(s, d[i]);
+        if(counter == d[i].size()){
+            max.push_back(counter);
+        }
+        else{
+            max.push_back(0);
+        }
+    }
+    if(count(max.begin(),max.end(),0) == max.size()){
+        return "";
+    }
+    else{
+        max_index = max_element(max.begin(),max.end()) - max.begin();
+        for(int i =0;i < max.size();i++){
+            if(max[i] == max[max_index]){
+                if(d[i]<d[max_index]){
+                    max_index= i;
+                }
+            }
+        }
+        return d[max_index];
+    }
+}
+int findword(string s, string d){
+    int count=0;
+    int index;
+    for(int i = 0;i<d.size();i++){
+        index = s.find(d[i]);
+        if(index != s.npos){
+            s = s.substr(index+1);
+            count++;
+        }
+        else{
+            count = 0;
+            break;
+        }
+    }
+    return count;
+}
