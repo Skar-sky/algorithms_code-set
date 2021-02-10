@@ -80,10 +80,7 @@ bool search(vector<int>& nums, int target) {
     }
     else{
         for(int i = 1;i<nums.size()-1;i++){
-            if(nums[i] == nums[i-1] && nums[i] == nums[i+1]){
-                pos = i;
-            }
-            else if((nums[i] > nums[i-1] && nums[i] > nums[i+1]) || (nums[i] >= nums[i-1] && nums[i] > nums[i+1])){
+            if((nums[i] > nums[i-1] && nums[i] > nums[i+1]) || (nums[i] >= nums[i-1] && nums[i] > nums[i+1])){
                 pos = i;
                 break;
             }
