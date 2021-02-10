@@ -62,3 +62,56 @@ int upper_bound(vector<int>& nums, int target){
     }
     return l;
 }
+
+
+
+// 3.(leet-code题号：81)旋转数组查找数字
+// 该题主要还是利用二分查找的思想，对于旋转数组的分类，我们需要把握好相对应的准则和方法，但是该题的方法有面对用例编程之嫌
+bool search(vector<int>& nums, int target) {
+    int pos = 0;
+    if(nums.size() == 1){
+        if(nums[0] == target)
+            return true;
+        else
+            return false;
+    }
+    if(nums[0] > nums[1]){
+        pos = 0;
+    }
+    else{
+        for(int i = 1;i<nums.size()-1;i++){
+            if(nums[i] == nums[i-1] && nums[i] == nums[i+1]){
+                pos = i;
+            }
+            else if((nums[i] > nums[i-1] && nums[i] > nums[i+1]) || (nums[i] >= nums[i-1] && nums[i] > nums[i+1])){
+                pos = i;
+                break;
+            }
+        }
+    }
+    vector<int>v0;
+    for(int i = 0;i < (pos+1);i++){
+        v0.push_back(nums[i]);
+    }
+    vector<int>v1;
+    for(int i = pos+1;i < nums.size();i++){
+        v1.push_back(nums[i]);
+    }
+    return (research(v0, target) || research(v1,target));    
+}
+bool research(vector<int>& number, int x){
+    int l = 0, r = number.size(), mid = 0;
+    while(l < r){
+        mid = (l+r)/2;
+        if(number[mid] > x){
+            r = mid;
+        }
+        else if(number[mid] < x){
+            l = mid + 1;
+        }
+        else{
+            return true;
+        }
+    }
+    return false;
+}
