@@ -27,3 +27,25 @@ void quicksort(vector<int>& nums, int start, int end){
 
 
 // 2.(leet-code题号：347)前K个高频元素
+// 该题主要利用的是排序算法，因为算法时间复杂度要求为o(logn)，所以我们采取堆排序或者桶排序，下面我采用的算法主要是桶排序，具体的数据结构还需要进一步研究
+vector<int> topKFrequent(vector<int>& nums, int k) {
+    unordered_map<int, int> counts;
+    int max_count = 0;
+    for (const int & num : nums) {
+        max_count = max(max_count, ++counts[num]);
+    }
+    vector<vector<int>> buckets(max_count + 1);
+    for (const auto & p : counts) {
+        buckets[p.second].push_back(p.first);
+    }
+    vector<int> ans;
+    for (int i = max_count; i >= 0 && ans.size() < k; --i) {
+        for (const int & num : buckets[i]) {
+            ans.push_back(num);
+            if (ans.size() == k) {
+                break;
+            }
+        }
+    }
+    return ans;
+}
