@@ -49,3 +49,52 @@ vector<int> topKFrequent(vector<int>& nums, int k) {
     }
     return ans;
 }
+
+
+
+// 3.(leet-code题号：451)根据字符出现频率排序
+// 方法一：利用两次桶排序得到顺序，然后输出
+string frequencySort(string s) {
+    unordered_map<char, int> map;
+    int maxCount(0);
+    for (char c: s)
+        maxCount = max(maxCount, ++map[c]);
+
+    vector<vector<int>> buckets(maxCount + 1);
+    for (auto i(map.begin()); i != map.end(); i++)
+        buckets[i->second].push_back(i->first);
+
+    string ans;
+    for (int i(maxCount); i >= 1; i--)
+        for (int j(0); j < buckets[i].size(); j++) {
+            for (int z(0); z < i; z++)
+                ans.push_back(buckets[i][j]);
+        }
+    return ans;
+}
+
+// 方法二：进行一次桶排序，然后利用易于理解的方法进行比较和输出
+string frequencySort(string s) {
+    unordered_map<char, int> mp;
+    string res = "";
+    for (auto ch : s) {
+        mp[ch]++;
+    }
+    while (!mp.empty()) {
+        int max = 0;
+        char temp;//这个用来保存key值，
+        for (unordered_map<char,int>::iterator it = mp.begin(); it != mp.end(); ++it) {
+            if (max < it->second) {
+                max = it->second;//找到最大的值
+                temp = it->first;//找到其对应的key，便于后面删除
+            }
+        }
+        while (max) { //重复的次数
+            res += temp;
+            --max;
+        }
+        mp.erase(temp);//把这个key删除
+    }
+    return res;
+}
+
