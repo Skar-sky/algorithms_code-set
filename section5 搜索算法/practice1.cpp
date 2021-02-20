@@ -80,3 +80,50 @@ void dfs(vector<vector<int>>& isConnected, int i, vector<bool>& visited){
         }
     }
 }
+
+
+
+// 3.(leet-code题号：417)太平洋大西洋水流问题
+// 该题同样也是考察深度优先搜索，我们采取与上述方法一致的算法解决问题
+vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix) {
+    if(matrix.empty() || matrix[0].empty()){
+        return {};
+    }
+    int m = matrix.size(), n = matrix[0].size();
+    vector<vector<int>>res;
+    vector<vector<bool>>reach_p(m, vector<bool>(n, false));
+    vector<vector<bool>>reach_a(m, vector<bool>(n, false));
+    for(int i = 0;i < m;i++){
+        dfs(matrix, reach_p, i, 0); //对能否到达太平洋进行判断，0即是表示左边界是可流入太平洋的
+        dfs(matrix, reach_a, i, n-1); //对能否到达大西洋进行判断，n-1表示右边界是可流入大西洋的
+    }
+    for(int i = 0;i < n;i++){
+        dfs(matrix, reach_p, 0, i); //对能否到达太平洋进行判断，0即是表示上边界是可流入太平洋的
+        dfs(matrix, reach_a, m-1, i); //对能否到达大西洋进行判断，m-1表示下边界是可流入大西洋的
+    }
+    for(int i = 0;i < m;i++){
+        for(int j = 0;j < n;j++){
+            if(reach_a[i][j] && reach_p[i][j]){
+                res.push_back({i,j});
+            }
+        }
+    }
+    return res;
+}
+void dfs(vector<vector<int>>& matrix, vector<vector<bool>>&reach, int r, int c){
+    if(reach[r][c]){
+        return;
+    }
+    int m = matrix.size(), n = matrix[0].size();
+    reach[r][c] = true;
+    int next_i = 0, next_j = 0;
+    vector<int>di{0,0,1,-1};
+    vector<int>dj{1,-1,0,0};
+    for(int i = 0;i < 4;i++){
+        next_i = r + di[i];
+        next_j = c + dj[i];
+        if(next_i>=0 && next_j>=0 && next_i<m && next_j<n && matrix[next_i][next_j]>=matrix[r][c]){
+            dfs(matrix, reach, next_i, next_j);
+        }
+    }
+}
