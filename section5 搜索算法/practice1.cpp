@@ -56,3 +56,27 @@ int maxAreaOfIsland(vector<vector<int>>& grid) {
     }
     return max_area;
 }
+
+
+
+// 2.(leet-code题号：547)省份数量
+// 此题与前题不同之处在于我们这里每个节点可与n个点相连，我们仍旧采取深度优先搜索的方法进行搜索，仍旧是递归的思想
+int findCircleNum(vector<vector<int>>& isConnected) {
+    vector<bool>visited(isConnected.size(), false);
+    int count = 0;
+    for(int i = 0;i < isConnected.size();i++){
+        if(!visited[i]){
+            dfs(isConnected, i, visited);
+            count++;
+        }
+    }
+    return count;
+}
+void dfs(vector<vector<int>>& isConnected, int i, vector<bool>& visited){
+    visited[i] = true;
+    for(int j = 0;j < isConnected.size();j++){
+        if(isConnected[i][j] == 1 && !visited[j]){
+            dfs(isConnected, j, visited);
+        }
+    }
+}
