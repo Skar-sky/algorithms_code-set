@@ -55,3 +55,30 @@ public:
         return res;
     }
 };
+
+
+// leet-code题号：77
+// 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+// 该题实际上就是dfs的一个应用，需要从该题上学到递归的思想和用法
+class Solution {
+    vector<int> temp;
+    vector<vector<int>> res;
+public:
+    void dfs(int cur, int n, int k){
+        if(temp.size() == k){
+            res.emplace_back(temp);
+            return;
+        }
+        if((temp.size()+n-cur+1)<k){  //进行的适当的剪枝，减小计算量,cur表示数值大小，该题可以类比其他类似的题目
+            return;
+        }
+        temp.emplace_back(cur);
+        dfs(cur+1, n, k);
+        temp.pop_back();
+        dfs(cur+1, n, k);
+    }
+    vector<vector<int>> combine(int n, int k) {
+        dfs(1,n,k);
+        return res;
+    }
+};
