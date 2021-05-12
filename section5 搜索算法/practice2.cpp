@@ -22,3 +22,36 @@ vector<vector<int>> permute(vector<int>& nums) {
     backtrack(res, nums, 0, (int)nums.size());
     return res;
 }
+
+
+// leet-code题号：47
+// 给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列
+// 与上题不同之处在于本题有一个对数组的限制，即数组中的元素是可以重复的，因此我们就就需要对visited数组进行一个判断
+class Solution {
+    vector<int>visited;
+public:
+    void backtrack(vector<int>& nums, vector<vector<int>>& res, int first, vector<int> perm){
+        if(first == nums.size()){
+            res.emplace_back(perm);
+            return;
+        }
+        for(int i = 0; i < nums.size(); ++i){
+            if(visited[i] ||(i > 0 && nums[i] == nums[i-1] && !visited[i-1])){      //注意：这里对!visited[i-1]的理解：表示第i-1位已经被visited
+                continue;                  
+            }
+            perm.push_back(nums[i]);
+            visited[i] = 1;
+            backtrack(nums, res, first+1,perm);
+            visited[i] = 0;
+            perm.pop_back();
+        }
+    }
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int>perm;
+        visited.resize(nums.size());
+        sort(nums.begin(), nums.end());
+        backtrack(nums, res, 0,perm);
+        return res;
+    }
+};
